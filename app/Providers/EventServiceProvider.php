@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\TicketCreated;
+use App\Events\TicketUpdated;
+use App\Listeners\NotifyAdminOfTicketCreation;
+use App\Listeners\NotifyUserOfTicketUpdate;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -17,6 +21,12 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        TicketCreated::class => [
+            NotifyAdminOfTicketCreation::class,
+        ],
+        TicketUpdated::class => [
+            NotifyUserOfTicketUpdate::class,
         ],
     ];
 

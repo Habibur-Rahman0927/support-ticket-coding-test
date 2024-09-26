@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\Create{{ ucfirst($name) }}Request;
 use App\Http\Requests\Update{{ ucfirst($name) }}Request;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class {{ ucfirst($name) }}Controller extends Controller
 {
@@ -122,7 +123,7 @@ class {{ ucfirst($name) }}Controller extends Controller
     {
         DB::beginTransaction();
         try {
-            $this->projectService->deleteById($id);
+            $this->{{ lcfirst($name) }}Service->deleteById($id);
             DB::commit();
 
             return redirect()->back()->with('success', '{{ ucfirst($name) }} deleted successfully.');

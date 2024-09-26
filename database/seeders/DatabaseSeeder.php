@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Ticket;
 use App\Models\User;
+use Database\Factories\TicketFactory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -24,6 +26,16 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10),
             'user_type' => User::USER_TYPE_ADMIN
         ]);
-        User::factory(10)->create();
+        User::factory()
+            ->count(3)
+            ->create()
+            ->each(function ($user) {
+                Ticket::factory()
+                    ->count(10)
+                    ->create([
+                        'user_id' => $user->id, // Associate the ticket with the created user
+                        'created_by' => $user->id, // Set created_by to the user
+                    ]);
+            });
     }
 }

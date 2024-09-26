@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('user_type')->default(User::USER_TYPE_CUSTOMER);
+            $table->string('user_type')->default(User::USER_TYPE_CUSTOMER)->comment('(1=Admin, 2=Customer)');
+            $table->tinyInteger('status')->default(User::STATUS_ACTIVE)->comment('1=Active, 2=In Active');
             $table->rememberToken();
             $table->timestamps();
         });
