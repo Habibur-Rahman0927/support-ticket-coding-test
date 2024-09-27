@@ -14,7 +14,7 @@ RUN apk update && apk add --no-cache \
     jpegoptim \
     optipng \
     pngquant \
-    gifsicle
+    gifsicle 
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
     docker-php-ext-install pdo_mysql exif pcntl bcmath gd

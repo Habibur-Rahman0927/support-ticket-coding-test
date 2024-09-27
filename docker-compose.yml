@@ -42,12 +42,27 @@ services:
       - mysql_data:/var/lib/mysql
     networks:
       - support_ticket
+
   redis:
     image: redis:alpine
     container_name: support_ticket_redis
     restart: unless-stopped
     ports:
       - "6379:6379"
+    networks:
+      - support_ticket
+      
+  queue_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: support_ticket_queue_worker
+    volumes:
+      - ./:/var/www
+    entrypoint: ["php", "/var/www/artisan", "queue:work", "--sleep=3", "--tries=3"]
+    depends_on:
+      - app
+      - redis
     networks:
       - support_ticket
 
