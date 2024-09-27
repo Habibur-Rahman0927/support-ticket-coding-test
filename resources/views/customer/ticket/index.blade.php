@@ -71,11 +71,16 @@
                                     <td>{{ $item->subject }}</td>
                                     <td>{{ $item->description }}</td>
                                     <td>
-                                        @if ($item->status == \App\Models\Ticket::STATUS_OPEN)
-                                            <span class="badge bg-success">{{ \App\Enums\TicketEnum::STATUS_OPEN }}</span>
-                                        @else
-                                            <span class="badge bg-danger">{{ \App\Enums\TicketEnum::STATUS_CLOSED }}</span>
-                                        @endif
+                                        <div class="d-flex">
+                                            @if ($item->status == \App\Models\Ticket::STATUS_OPEN)
+                                                <span class="badge bg-success">{{ \App\Enums\TicketEnum::STATUS_OPEN }}</span>
+                                            @else
+                                                <span class="badge bg-danger">{{ \App\Enums\TicketEnum::STATUS_CLOSED }}</span>
+                                            @endif
+                                            <a href="{{ route('ticket.show', $item->id) }}" class="btn btn-info btn-sm ms-2" title="View Ticket">
+                                                View
+                                            </a>
+                                        </div>
                                     </td>
                                     
                                 </tr>

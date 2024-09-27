@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateTicketRequest;
 use App\Models\Ticket;
+use App\Repositories\Ticket\ITicketRepository;
 use App\Services\Ticket\ITicketService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,10 @@ use Illuminate\Support\Facades\DB;
 
 class TicketController extends Controller
 {
-    public function __construct(private ITicketService $ticketService)
+    public function __construct(
+                                private ITicketService $ticketService,
+                                private ITicketRepository $ticketRepository,
+                                )
     {
 
     }
@@ -55,7 +59,14 @@ class TicketController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $response = $this->ticketRepository->findByIdWithRelations($id);
+            return view('customer.ticket.show')->with([
+                'data' => $response,
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Some thing Went wrong');
+        }
     }
 
     /**
