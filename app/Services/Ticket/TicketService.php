@@ -5,6 +5,8 @@ namespace App\Services\Ticket;
 
 use App\Events\TicketCreated;
 use App\Events\TicketUpdated;
+use App\Jobs\CreateTicketNotification;
+use App\Jobs\UpdateTicketNotification;
 use App\Models\Ticket;
 use App\Repositories\Ticket\ITicketRepository;
 use App\Repositories\TicketResponse\ITicketResponseRepository;
@@ -38,7 +40,8 @@ class TicketService extends BaseService implements ITicketService
             ];
 
             $ticket = $this->create($data);
-            event(new TicketCreated($ticket));
+            // event(new TicketCreated($ticket));
+            CreateTicketNotification::dispatch($ticket);
             DB::commit();
             return $ticket;
 
@@ -65,7 +68,8 @@ class TicketService extends BaseService implements ITicketService
                 'created_by' => $userId,
                 'updated_by' => $userId,
             ];
-            event(new TicketUpdated($ticket));
+            // event(new TicketUpdated($ticket));
+            UpdateTicketNotification::dispatch($ticket);
 
             $this->ticketResponseRepository->create($data);
             DB::commit();

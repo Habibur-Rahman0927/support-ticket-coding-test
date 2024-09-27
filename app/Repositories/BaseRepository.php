@@ -61,7 +61,7 @@ abstract class BaseRepository implements IBaseRepository
      */
     public function findAllWithPagination(array $conditions = [], array $columns = ['*'], int $limit): LengthAwarePaginator
     {
-        return $this->model->where($conditions)->paginate($limit);
+        return $this->model->where($conditions)->orderBy('created_at', 'desc')->paginate($limit);
     }
 
     /**
